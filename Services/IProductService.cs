@@ -7,5 +7,7 @@ public interface IProductService
 {
     List<Product> GetAllProducts();
     Product? GetProductById(int id);
-    Product CreateProduct(ProductCreateDto productDto);
+    Product CreateProduct(ProductCreateDto dto);
+    Product? UpdateProduct(int id, ProductCreateDto dto);
+    bool DeleteProduct(int id);
 }

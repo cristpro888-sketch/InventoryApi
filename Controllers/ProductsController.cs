@@ -11,37 +11,48 @@ public class ProductsController : ControllerBase
 {
     private readonly IProductService _productService;
 
-    // Dependency Injection via constructor
     public ProductsController(IProductService productService)
     {
         _productService = productService;
     }
 
-    // GET: api/products
     [HttpGet]
     public ActionResult<List<Product>> GetAll()
     {
-        var products = _productService.GetAllProducts();
-        return Ok(products);
+        return Ok(_productService.GetAllProducts());
     }
 
-    // GET: api/products/1
     [HttpGet("{id}")]
     public ActionResult<Product> GetById(int id)
     {
         var product = _productService.GetProductById(id);
-        if (product == null)
-        {
-            return NotFound(new { message = $"Product with ID {id} was not found." });
-        }
+        if (product == null) return NotFound();
+
         return Ok(product);
     }
 
-    // POST: api/products
     [HttpPost]
-    public ActionResult<Product> Create([FromBody] ProductCreateDto productDto)
+    public ActionResult<Product> Create([FromBody] ProductCreateDto dto)
     {
-        var newProduct = _productService.CreateProduct(productDto);
+        var newProduct = _productService.CreateProduct(dto);
         return CreatedAtAction(nameof(GetById), new { id = newProduct.Id }, newProduct);
+    }
+
+    [HttpPut("{id}")]
+    public IActionResult Update(int id, [FromBody] ProductCreateDto dto)
+    {
+        var updatedProduct = _productService.UpdateProduct(id, dto);
+        if (updatedProduct == null) return NotFound();
+
+        return Ok(updatedProduct);
+    }
+
+    [HttpDelete("{id}")]
+    public IActionResult Delete(int id)
+    {
+        var isDeleted = _productService.DeleteProduct(id);
+        if (!isDeleted) return NotFound();
+
+        return NoContent();
     }
 }
