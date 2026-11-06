@@ -28,3 +28,14 @@ Content-Type: application/json
 
 ### Delete product
 DELETE http://localhost:5176/api/products/2
+
+### Test Validations (Error 400 Bad Request)
+POST http://localhost:5176/api/products
+Content-Type: application/json
+
+{
+  "name": "",
+  "description": "Producto de prueba con errores",
+  "price": -15.00,
+  "stock": -5
+}
