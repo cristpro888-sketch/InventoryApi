@@ -1,3 +1,4 @@
+using InventoryApi.Data;
 using InventoryApi.Models;
 using InventoryApi.Models.DTOs;
 
@@ -5,24 +6,28 @@ namespace InventoryApi.Services;
 
 public class ProductService : IProductService
 {
-    private static readonly List<Product> _products = new()
-    {
-        new Product { Id = 1, Name = "Gaming Laptop", Description = "High performance laptop", Price = 1200, Stock = 10, CreatedAt = DateTime.UtcNow },
-        new Product { Id = 2, Name = "Mechanical Keyboard", Description = "RGB Backlit keyboard", Price = 80, Stock = 25, CreatedAt = DateTime.UtcNow }
-    };
+    private readonly InventoryDbContext _context;
 
-    public List<Product> GetAllProducts() => _products;
+    // Inyectamos la base de datos al servicio
+    public ProductService(InventoryDbContext context)
+    {
+        _context = context;
+    }
+
+    public List<Product> GetAllProducts()
+    {
+        return _context.Products.ToList();
+    }
 
     public Product? GetProductById(int id)
     {
-        return _products.FirstOrDefault(p => p.Id == id);
+        return _context.Products.FirstOrDefault(p => p.Id == id);
     }
 
     public Product CreateProduct(ProductCreateDto dto)
     {
         var newProduct = new Product
         {
-            Id = _products.Count > 0 ? _products.Max(p => p.Id) + 1 : 1,
             Name = dto.Name,
             Description = dto.Description,
             Price = dto.Price,
@@ -30,7 +35,10 @@ public class ProductService : IProductService
             CreatedAt = DateTime.UtcNow
         };
 
-        _products.Add(newProduct);
+        // Agregamos a la base de datos y guardamos los cambios
+        _context.Products.Add(newProduct);
+        _context.SaveChanges();
+        
         return newProduct;
     }
 
@@ -44,6 +52,9 @@ public class ProductService : IProductService
         existingProduct.Price = dto.Price;
         existingProduct.Stock = dto.Stock;
 
+        // Guardamos los cambios en la base de datos
+        _context.SaveChanges();
+        
         return existingProduct;
     }
 
@@ -52,7 +63,9 @@ public class ProductService : IProductService
         var existingProduct = GetProductById(id);
         if (existingProduct == null) return false;
 
-        _products.Remove(existingProduct);
+        _context.Products.Remove(existingProduct);
+        _context.SaveChanges();
+        
         return true;
     }
 }
