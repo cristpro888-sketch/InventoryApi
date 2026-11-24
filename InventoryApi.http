@@ -39,3 +39,29 @@ Content-Type: application/json
   "price": -15.00,
   "stock": -5
 }
+### 1. Intentar ver productos SIN token (Debe devolver 401 Unauthorized)
+GET http://localhost:5176/api/products
+Accept: application/json
+
+### 2. Registrar un usuario administrador nuevo (Debe devolver 200 OK)
+POST http://localhost:5176/api/auth/register
+Content-Type: application/json
+
+{
+  "username": "admin_cristian",
+  "password": "Password123!"
+}
+
+### 3. Iniciar sesión para obtener el Token JWT (Copia el token de la respuesta)
+POST http://localhost:5176/api/auth/login
+Content-Type: application/json
+
+{
+  "username": "admin_cristian",
+  "password": "Password123!"
+}
+
+### 4. Ver productos CON token (Reemplaza  por el texto largo del paso 3)
+GET http://localhost:5176/api/products
+Authorization: Bearer eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1laWRlbnRpZmllciI6IjEiLCJodHRwOi8vc2NoZW1hcy54bWxzb2FwLm9yZy93cy8yMDA1LzA1L2lkZW50aXR5L2NsYWltcy9uYW1lIjoiYWRtaW5fY3Jpc3RpYW4iLCJodHRwOi8vc2NoZW1hcy5taWNyb3NvZnQuY29tL3dzLzIwMDgvMDYvaWRlbnRpdHkvY2xhaW1zL3JvbGUiOiJBZG1pbiIsImV4cCI6MTc5NTU0MzkyOCwiaXNzIjoiSW52ZW50b3J5QXBpIiwiYXVkIjoiSW52ZW50b3J5QXBpVXNlcnMifQ._qweURC-rOPIZLn2Bx8H75-tyKFdPLbjMaq9jSIfXmY
+Accept: application/json
