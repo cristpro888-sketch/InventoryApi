@@ -11,6 +11,17 @@ var builder = WebApplication.CreateBuilder(args);
 builder.Services.AddControllers();
 builder.Services.AddOpenApi();
 
+// 1. Configurar CORS para permitir peticiones desde el Frontend
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy("AllowFrontend", policy =>
+    {
+        policy.AllowAnyOrigin()
+              .AllowAnyMethod()
+              .AllowAnyHeader();
+    });
+});
+
 // Register Custom Application Services (Dependency Injection)
 builder.Services.AddScoped<IProductService, ProductService>();
 builder.Services.AddScoped<IAuthService, AuthService>();
@@ -43,7 +54,9 @@ if (app.Environment.IsDevelopment())
     app.MapOpenApi();
 }
 
-// El orden es crítico: primero Authentication (quién eres), luego Authorization (qué puedes hacer)
+// 2. Activar CORS antes de Authentication y Authorization
+app.UseCors("AllowFrontend");
+
 app.UseAuthentication();
 app.UseAuthorization();
 

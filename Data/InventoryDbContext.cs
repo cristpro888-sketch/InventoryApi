@@ -11,4 +11,5 @@ public class InventoryDbContext : DbContext
 
     public DbSet<Product> Products { get; set; }
     public DbSet<User> Users { get; set; }
+    public DbSet<StockMovement> StockMovements { get; set; }
 }

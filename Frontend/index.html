@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>InventoryApi - Panel de Control</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+
+    <!-- PANTALLA DE LOGIN / REGISTRO -->
+    <div id="auth-section" class="container auth-box">
+        <h1>Inventory System</h1>
+        <p class="subtitle">Inicia sesión o regístrate para gestionar el inventario</p>
+        
+        <form id="auth-form">
+            <input type="text" id="username" placeholder="Usuario (mín. 4 caracteres)" required>
+            <input type="password" id="password" placeholder="Contraseña (mín. 6 caracteres)" required>
+            <div class="auth-buttons">
+                <button type="submit" id="btn-login" class="btn-primary">Iniciar Sesión</button>
+                <button type="button" id="btn-register" class="btn-secondary">Registrarse</button>
+            </div>
+        </form>
+        <p id="auth-message" class="message"></p>
+    </div>
+
+<!-- PANEL PRINCIPAL DE INVENTARIO (Oculto hasta iniciar sesión) -->
+    <div id="dashboard-section" class="container hidden">
+        <header class="top-bar">
+            <h1> Gestión de Inventario</h1>
+            <button id="btn-logout" class="btn-danger">Cerrar Sesión</button>
+        </header>
+
+        <!-- Formulario para agregar o editar producto -->
+        <section class="card">
+            <h2 id="form-title">Agregar Nuevo Producto</h2>
+            <form id="product-form" class="grid-form">
+                <input type="hidden" id="product-id">
+                <input type="text" id="prod-name" placeholder="Nombre del producto" required>
+                <input type="text" id="prod-desc" placeholder="Descripción" required>
+                <input type="number" id="prod-price" step="0.01" placeholder="Precio (S/.)" required>
+                <input type="number" id="prod-stock" placeholder="Stock" required>
+                <div class="form-actions">
+                    <button type="submit" id="btn-save" class="btn-primary">Guardar Producto</button>
+                    <button type="button" id="btn-cancel-edit" class="btn-secondary hidden">Cancelar</button>
+                </div>
+            </form>
+        </section>
+
+        <!-- Tabla de productos desde SQL Server -->
+        <section class="card">
+            <h2>Productos en Base de Datos</h2>
+            <table>
+                <thead>
+                    <tr>
+                        <th>ID</th>
+                        <th>Nombre</th>
+                        <th>Descripción</th>
+                        <th>Precio</th>
+                        <th>Stock</th>
+                        <th>Acciones</th>
+                    </tr>
+                </thead>
+                <tbody id="products-table-body">
+                    <!-- Aquí se cargarán los productos dinámicamente -->
+                </tbody>
+            </table>
+        </section>
+    </div>
+
+    <script src="app.js"></script>
+</body>
+</html>
